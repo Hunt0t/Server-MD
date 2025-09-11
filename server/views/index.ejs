@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>2FA QR Code</title>
+</head>
+<body>
+  <h1>Two Factor Authentication Setup</h1>
+  <p><strong>Secret:</strong> <%= secret %></p>
+  <div>
+    <img src="<%= qrCode %>" alt="QR Code" />
+  </div>
+  <p>Scan this QR code with your authenticator app.</p>
+</body>
+</html>
