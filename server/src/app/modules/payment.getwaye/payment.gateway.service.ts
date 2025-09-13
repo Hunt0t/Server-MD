@@ -3,7 +3,9 @@ import { TPaymentGateway } from './payment.gateway.schema';
 
 // Get all payment gateways
 const getPaymentGateways = async () => {
-  return PaymentGateway.find();
+  const result = await PaymentGateway.find();
+  
+   return result
 };
 
 
@@ -19,11 +21,15 @@ const updatePaymentGateway = async (payload: Partial<TPaymentGateway>) => {
   if (payload.name !== undefined) updateObj.name = payload.name;
   if (payload.apiKey !== undefined) updateObj.apiKey = payload.apiKey;
   if (payload.details !== undefined) updateObj.details = payload.details;
+  if (payload.wallet !== undefined) updateObj.wallet = payload.wallet;
+  if (payload.email !== undefined) updateObj.email = payload.email;
+  if (payload.password !== undefined) updateObj.password = payload.password; // consider hashing upstream
 
+  
   return PaymentGateway.findByIdAndUpdate(
     payload.id,
     updateObj,
-    { new: true },
+    { new: true, select: '+wallet +email' },
   );
 };
 
@@ -36,7 +42,7 @@ const updatePaymentGatewayStatus = async (id: string, isActive: boolean) => {
   return PaymentGateway.findByIdAndUpdate(
     id,
     { isActive },
-    { new: true },
+    { new: true, select: '+wallet +email' },
   );
 };
 

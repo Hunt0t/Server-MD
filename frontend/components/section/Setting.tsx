@@ -45,7 +45,7 @@ const Settings = () => {
 
   // Payment Gateway Edit State
   const [editId, setEditId] = useState<string | null>(null);
-  const [editData, setEditData] = useState<any>({ name: '', apiKey: '', details: '' });
+  const [editData, setEditData] = useState<any>({ name: '', apiKey: '', details: '', wallet: '', email: '', password: '' });
 
   if (isLoading || isLoadingPaymentGateways) {
     return <Loading />;
@@ -53,7 +53,14 @@ const Settings = () => {
 
   const handleEditClick = (item: any) => {
     setEditId(item._id);
-    setEditData({ name: item.name, apiKey: item.apiKey, details: item.details });
+    setEditData({
+      name: item.name || '',
+      apiKey: item.apiKey || '',
+      details: item.details || '',
+      wallet: item.wallet || '',
+      email: item.email || '',
+      password: item.password || ''
+    });
   };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -62,7 +69,11 @@ const Settings = () => {
 
   const handleEditSave = async (item: any) => {
     try {
-      await updatePaymentGateway({ id: item._id, ...editData }).unwrap();
+      const payload = { ...editData };
+      if (!payload.password) {
+        delete (payload as any).password;
+      }
+      await updatePaymentGateway({ id: item._id, ...payload }).unwrap();
       setEditId(null);
       Swal.fire({
         icon: 'success',
@@ -171,6 +182,7 @@ const Settings = () => {
             {editId === item._id ? (
               <>
                 <div className="flex flex-col gap-2 mb-2">
+                  Name
                   <input
                     type="text"
                     name="name"
@@ -179,6 +191,7 @@ const Settings = () => {
                     className="border rounded px-2 py-1"
                     placeholder="Gateway Name"
                   />
+                  API key(public)
                   <input
                     type="text"
                     name="apiKey"
@@ -187,6 +200,34 @@ const Settings = () => {
                     className="border rounded px-2 py-1"
                     placeholder="API Key"
                   />
+                  Wallet Number
+                  <input
+                    type="text"
+                    name="wallet"
+                    value={editData.wallet}
+                    onChange={handleEditChange}
+                    className="border rounded px-2 py-1"
+                    placeholder="Wallet"
+                  />
+Email
+                  <input
+                    type="email"
+                    name="email"
+                    value={editData.email}
+                    onChange={handleEditChange}
+                    className="border rounded px-2 py-1"
+                    placeholder="Email"
+                  />
+                  Password
+                  <input
+                    type="text"
+                    name="password"
+                    value={editData.password}
+                    onChange={handleEditChange}
+                    className="border rounded px-2 py-1"
+                    placeholder="New Password (optional)"
+                  />
+                  Details (Note)
                   <textarea
                     name="details"
                     value={editData.details}
@@ -234,6 +275,14 @@ const Settings = () => {
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <h2 className="text-lg leading-[30px] font-semibold">{item.apiKey}</h2>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium">Wallet:</span>
+                  <span className="text-sm break-all">{item.wallet || '-'}</span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium">Email:</span>
+                  <span className="text-sm break-all">{item.email || '-'}</span>
                 </div>
                 <div
                   className="prose"

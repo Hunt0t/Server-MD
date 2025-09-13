@@ -7,6 +7,9 @@ const productGateWaySchema = z.object({
     details: z.string().optional(),
     apiKey: z.string().optional(),
     isActive: z.boolean().default(false),
+    wallet: z.string().optional(),
+    email: z.string().email().optional(),
+    password: z.string().min(1).optional(),
   }),
 });
 

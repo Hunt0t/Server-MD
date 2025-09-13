@@ -26,9 +26,9 @@ export default {
   smtp_host: process.env.SMTP_HOST,
   smtp_post: process.env.SMTP_PORT,
   now_payment_url: process.env.NOW_PAYMENT_URL,
-  now_payment_api_key: process.env.NOW_PAYMENTS_API_KEY,
-  now_payment_email: process.env.NOW_PAYMENT_EMAIL,
-  now_payment_password: process.env.NOW_PAYMENT_PASSWORD,
+  // now_payment_api_key: process.env.NOW_PAYMENTS_API_KEY,
+  // now_payment_email: process.env.NOW_PAYMENT_EMAIL,
+  // now_payment_password: process.env.NOW_PAYMENT_PASSWORD,
 };
 
 export const jwt_access_expires_in = '31536000s';

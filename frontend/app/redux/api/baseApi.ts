@@ -6,7 +6,8 @@ import { RootState } from "../featuers/store";
 import { setUser, logout } from "./auth/authSlice";
 import { tagTypesList } from "@/app/types/tag-types";
 
-export const baseAPI = "http://localhost:5000/api/v1";
+export const baseAPI = "https://api.promaxs.oi/api/v1";
+// export const baseAPI = "http://localhost:5000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: baseAPI,

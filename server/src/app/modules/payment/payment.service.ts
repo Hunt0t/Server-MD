@@ -7,6 +7,7 @@ import { conflict } from '../../utils/errorfunc';
 import { Payment, PAYMENT_STATUS } from './payment.model';
 import axios from 'axios';
 import config from '../../config';
+import { PaymentGateway } from '../payment.getwaye/payment.gateway.model';
 
 const getSinglePaymentByUrl = async (url: string) => {
   const payment = await Payment.findOne({ nowpayments_payment_url: url });
@@ -15,6 +16,9 @@ const getSinglePaymentByUrl = async (url: string) => {
 };
 
 const createOrUpdatePayment = async (req: any) => {
+
+  const result = await PaymentGateway.findOne({_id : "68b7e2225656130ec54b32be"});
+  
   const userId = req?.user?.id;
 
   const { amount, currency, orderId } = req.body;
@@ -36,12 +40,12 @@ const createOrUpdatePayment = async (req: any) => {
     await axios.post(
       `${config.now_payment_url}/auth`,
       {
-        email: config.now_payment_email,
-        password: config.now_payment_password,
+        email: result?.email,
+        password: result?.password,
       },
       {
         headers: {
-          'x-api-key': config.now_payment_api_key,
+          'x-api-key': result?.apiKey,
           'Content-Type': 'application/json',
         },
       },
@@ -58,7 +62,7 @@ const createOrUpdatePayment = async (req: any) => {
       },
       {
         headers: {
-          'x-api-key': config.now_payment_api_key,
+          'x-api-key': result?.apiKey,
           'Content-Type': 'application/json',
         },
       },
@@ -81,7 +85,7 @@ const createOrUpdatePayment = async (req: any) => {
       invoiceData,
       {
         headers: {
-          'x-api-key': config.now_payment_api_key,
+          'x-api-key': result?.apiKey,
           'Content-Type': 'application/json',
         },
       },
